@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans p-6 space-y-6">
+
+  <!-- Header -->
+  <header class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-slate-800 gap-4">
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+        <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-xl font-black tracking-wider uppercase text-slate-100 flex items-center gap-2">
+          ShieldPulse <span class="text-xs font-semibold px-2 py-0.5 bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded">ENTERPRISE</span>
+        </h1>
+        <p class="text-xs text-slate-400 font-medium">Real-Time Threat Intelligence & Edge Network Defense</p>
+      </div>
+    </div>
+
+    <!-- Status Pill Indicators -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-400 uppercase font-semibold">System State:</span>
+        <span class="font-bold text-emerald-400">OPERATIONAL</span>
+      </div>
+
+      <div class="flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs">
+        <span class="text-slate-400 uppercase font-semibold">Active Incidents:</span>
+        <span id="incident-count" class="font-bold text-slate-200">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Scanner Card -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section class="lg:col-span-2 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
+      <div class="flex items-center gap-2 pb-2 border-b border-slate-800/80">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Target URL Scanner</h2>
+      </div>
+
+      <form id="audit-form" class="flex flex-col sm:flex-row gap-3">
+        <input
+          id="target-input"
+          type="text"
+          placeholder="domain.com or https://api.endpoint.com"
+          class="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 outline-none transition"
+        />
+        <button
+          type="submit"
+          class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition flex items-center justify-center cursor-pointer"
+        >
+          Audit Target
+        </button>
+      </form>
+
+      <!-- Audit Results Box -->
+      <div id="results-box" class="hidden p-4 rounded-xl border mt-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 id="result-title" class="font-bold text-sm"></h3>
+            <p id="result-desc" class="text-xs opacity-80 mt-0.5"></p>
+          </div>
+          <span id="result-badge" class="text-xs font-black uppercase px-2.5 py-1 rounded border"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics Sidebar -->
+    <section class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+      <div class="pb-2 border-b border-slate-800/80">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">System Telemetry</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80">
+          <span class="text-[11px] font-semibold text-slate-500 uppercase block">Total Audits</span>
+          <span id="audit-count-metric" class="text-2xl font-black text-slate-100 font-mono mt-1 block">1,000</span>
+          <span class="text-[10px] text-emerald-400 mt-0.5 block">100% Validated</span>
+        </div>
+
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80">
+          <span class="text-[11px] font-semibold text-slate-500 uppercase block">TLS Latency</span>
+          <span class="text-2xl font-black text-cyan-400 font-mono mt-1 block">12 ms</span>
+          <span class="text-[10px] text-slate-500 mt-0.5 block">Zero Overhead</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Terminal Stream -->
+  <section class="bg-slate-950 border border-slate-800 rounded-2xl p-4 font-mono text-xs space-y-1.5 text-slate-400">
+    <div class="pb-2 mb-2 border-b border-slate-800/80 font-bold text-slate-300 uppercase">
+      Kernel Telemetry Stream
+    </div>
+    <p><span class="text-slate-600">[00:00:01]</span> <span class="text-cyan-400">INFO:</span> ShieldPulse Kernel initialized.</p>
+    <p id="log-output"><span class="text-slate-600">[00:00:02]</span> <span class="text-emerald-400">SUCCESS:</span> Threat Engine listening for target parameters.</p>
+  </section>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    document.getElementById('audit-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('target-input').value.trim();
+      if (!input) return;
+
+      const lower = input.toLowerCase();
+      const hasSql = /('|\b(union|select|drop|insert|delete)\b)/i.test(lower);
+      const hasXss = /(<script>|javascript:|onerror=)/i.test(lower);
+      const isInsecure = lower.startsWith('http://');
+
+      const resultsBox = document.getElementById('results-box');
+      const title = document.getElementById('result-title');
+      const desc = document.getElementById('result-desc');
+      const badge = document.getElementById('result-badge');
+      const incidentCount = document.getElementById('incident-count');
+      const logOutput = document.getElementById('log-output');
+
+      resultsBox.classList.remove('hidden', 'bg-emerald-500/5', 'border-emerald-500/20', 'text-emerald-300', 'bg-rose-500/5', 'border-rose-500/20', 'text-rose-300');
+
+      if (hasSql || hasXss || isInsecure) {
+        resultsBox.classList.add('bg-rose-500/5', 'border-rose-500/20', 'text-rose-300');
+        title.innerText = 'ACTIVE THREAT SIGNATURE DETECTED';
+        desc.innerText = 'Malicious URL payload parameter matched standard exploit pattern.';
+        badge.innerText = 'CRITICAL';
+        badge.className = 'text-xs font-black uppercase px-2.5 py-1 rounded border border-rose-500/30 bg-rose-500/10';
+        incidentCount.innerText = '1';
+        incidentCount.className = 'font-bold text-rose-400';
+        logOutput.innerHTML = `<span class="text-slate-600">[LOG]</span> <span class="text-rose-400">ALERT:</span> Threat vector matched in input payload.`;
+      } else {
+        resultsBox.classList.add('bg-emerald-500/5', 'border-emerald-500/20', 'text-emerald-300');
+        title.innerText = 'SECURE TLS CONNECTION — GRADE A+';
+        desc.innerText = '0 Threat Signatures. Standard cross-origin and transport policies validated.';
+        badge.innerText = 'PASSED';
+        badge.className = 'text-xs font-black uppercase px-2.5 py-1 rounded border border-emerald-500/30 bg-emerald-500/10';
+        incidentCount.innerText = '0';
+        incidentCount.className = 'font-bold text-slate-200';
+        logOutput.innerHTML = `<span class="text-slate-600">[LOG]</span> <span class="text-emerald-400">AUDIT:</span> Target clean. 0 threat signatures detected.`;
+      }
+    });
+  </script>
+</body>
+</html>

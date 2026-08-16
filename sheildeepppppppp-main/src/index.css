@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+
+    --bg-main: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --border-subtle: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+  }
+
+  .dark {
+    color-scheme: dark;
+    /* Deep Slate/Carbon base for true enterprise readability */
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+    
+    /* Layered card surfaces */
+    --card: 222 44% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 44% 10%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Restrained, authoritative Cyber Cobalt primary */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    
+    /* Subtle structural contrasts */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    
+    /* Enterprise status alerts */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    
+    /* Crisp hairline panel borders */
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+
+    --bg-main: #020617;
+    --bg-surface: #0f172a;
+    --bg-card: #0f172a;
+    --border-subtle: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  /* Clean enterprise SOC panel */
+  .soc-panel {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius);
+  }
+
+  .dark .soc-panel {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Micro status badge indicators */
+  .badge-operational {
+    background-color: rgba(34, 197, 94, 0.12);
+    color: rgb(22, 163, 74);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .dark .badge-operational {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: rgb(74, 222, 128);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+  }
+
+  .badge-critical {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: rgb(220, 38, 38);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .dark .badge-critical {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: rgb(248, 113, 113);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+  }
+
+  /* Tabular Numbers for Technical Telemetry */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Human-Professional Badges */
+  .badge-sky, .badge-steel {
+    background-color: rgba(2, 132, 199, 0.12);
+    color: #0284c7;
+    border: 1px solid rgba(2, 132, 199, 0.25);
+  }
+  .dark .badge-sky, .dark .badge-steel {
+    background-color: rgba(2, 132, 199, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(2, 132, 199, 0.3);
+  }
+
+  .badge-emerald {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+  }
+  .dark .badge-emerald {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .badge-amber {
+    background-color: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+  }
+  .dark .badge-amber {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .badge-rose {
+    background-color: rgba(244, 63, 94, 0.12);
+    color: #e11d48;
+    border: 1px solid rgba(244, 63, 94, 0.25);
+  }
+  .dark .badge-rose {
+    background-color: rgba(244, 63, 94, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+  }
+
+  .badge-slate {
+    background-color: rgba(226, 232, 240, 0.7);
+    color: #334155;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+  }
+  .dark .badge-slate {
+    background-color: rgba(51, 65, 85, 0.4);
+    color: #cbd5e1;
+    border: 1px solid rgba(71, 85, 105, 0.5);
+  }
+
+  /* Light Mesh Background */
+  .bg-light-mesh {
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(2, 132, 199, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.03) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(244, 63, 94, 0.02) 0px, transparent 50%);
+  }
+
+  /* Pure Deep Mesh Background (Zero Background Dots) */
+  .bg-deep-mesh {
+    background-color: #020617;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(2, 132, 199, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(244, 63, 94, 0.03) 0px, transparent 50%);
+  }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+::selection {
+  background: rgba(2, 132, 199, 0.25);
+  color: #0f172a;
+}
+
+.dark ::selection {
+  background: rgba(2, 132, 199, 0.35);
+  color: #ffffff;
+}
