@@ -4,7 +4,6 @@ import crypto from "crypto";
 import https from "https";
 import http from "http";
 import tls from "tls";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import { performSecurityAudit } from "./src/lib/securityAudit";
 
@@ -1368,6 +1367,7 @@ app.post("/api/v1/reports/generate", (req, res) => {
 // ---------------------------------------------------------
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -1386,4 +1386,13 @@ async function startServer() {
   });
 }
 
-startServer();
+// Vercel invokes the exported Express app as a serverless function. Keep the
+// listener for local development only, where Vite middleware serves the client.
+if (!process.env.VERCEL) {
+  startServer().catch((error) => {
+    console.error("Unable to start ShieldPulse Core", error);
+    process.exit(1);
+  });
+}
+
+export default app;
