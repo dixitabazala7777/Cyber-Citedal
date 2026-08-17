@@ -5,7 +5,7 @@ import https from "https";
 import http from "http";
 import tls from "tls";
 import { GoogleGenAI } from "@google/genai";
-import { performSecurityAudit } from "./src/lib/securityAudit";
+import { performSecurityAudit } from "./src/lib/securityAudit.js";
 
 const app = express();
 app.use(express.json({ limit: "50mb" }));
@@ -35,7 +35,30 @@ function getGeminiClient(): GoogleGenAI {
 // ---------------------------------------------------------
 // TELEMETRY HUB & ATOMIC PERSISTENCE STATE (Feature 3)
 // ---------------------------------------------------------
-const telemetryState = {
+interface GatewayNode {
+  id: string;
+  name: string;
+  region: string;
+  status: "operational" | "isolated";
+  cpuUsage: number;
+  memoryUsage: number;
+  latency: number;
+}
+
+const telemetryState: {
+  totalBlockedIntrusions: number;
+  rolling24hIntrusions: number;
+  totalProcessedBytes: number;
+  totalLatencySumMs: number;
+  requestCount: number;
+  vpnTunnelActive: boolean;
+  vpnTunnelCount: number;
+  dbPingMs: number;
+  dbHealthPct: number;
+  nodes: GatewayNode[];
+  sparklineLatency: number[];
+  sparklineThroughput: number[];
+} = {
   totalBlockedIntrusions: 14280,
   rolling24hIntrusions: 1842,
   totalProcessedBytes: 104857600,
@@ -46,9 +69,9 @@ const telemetryState = {
   dbPingMs: 4.2,
   dbHealthPct: 99.98,
   nodes: [
-    { id: "node-us-east-1", name: "US-EAST-01 Proxy", region: "us-east-1", status: "operational" as const, cpuUsage: 42, memoryUsage: 58, latency: 14 },
-    { id: "node-eu-west-1", name: "EU-WEST-02 Gateway", region: "eu-west-1", status: "operational" as const, cpuUsage: 68, memoryUsage: 74, latency: 48 },
-    { id: "node-ap-south-1", name: "AP-SOUTH-01 Edge", region: "ap-south-1", status: "operational" as const, cpuUsage: 38, memoryUsage: 45, latency: 82 }
+    { id: "node-us-east-1", name: "US-EAST-01 Proxy", region: "us-east-1", status: "operational", cpuUsage: 42, memoryUsage: 58, latency: 14 },
+    { id: "node-eu-west-1", name: "EU-WEST-02 Gateway", region: "eu-west-1", status: "operational", cpuUsage: 68, memoryUsage: 74, latency: 48 },
+    { id: "node-ap-south-1", name: "AP-SOUTH-01 Edge", region: "ap-south-1", status: "operational", cpuUsage: 38, memoryUsage: 45, latency: 82 }
   ],
   sparklineLatency: [12, 14, 15, 13, 14, 18, 14, 12, 15, 14],
   sparklineThroughput: [12000, 14500, 13800, 16200, 15000, 17800, 18400]
@@ -720,7 +743,9 @@ async function inspectUrlWithTls(targetUrl: string, originalInput: string) {
           cipher: cipher ? cipher.name : 'TLS_AES_256_GCM_SHA384',
           validFrom: cert.valid_from,
           validTo: cert.valid_to,
-          issuer: typeof cert.issuer === 'object' ? cert.issuer.O || cert.issuer.CN : String(cert.issuer),
+          issuer: typeof cert.issuer === 'object'
+            ? String(cert.issuer.O ?? cert.issuer.CN ?? '')
+            : String(cert.issuer),
           certValid: !socket.authorizationError
         };
       }
